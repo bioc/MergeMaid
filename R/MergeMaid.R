@@ -248,7 +248,7 @@ AverageDuplicates  <- function(data.exprs,data.acc) {
    k <- 0
    for(i in data3.acc) {
     k <- k+1
-    data3.exprs[k,]<-apply(data2.exprs[data2.acc==i,],2,mean,na.rm=T)
+    data3.exprs[k,]<-apply(data2.exprs[data2.acc==i,],2,mean,na.rm=TRUE)
    }
   
    data4.exprs<-rbind(data1.exprs,data3.exprs)
@@ -507,11 +507,11 @@ check.length  <- function(x,wh){
   
   tmp  <- status[!is.na(status)&!is.na(outcome)&!is.na(x)]
   nobs = sum(tmp==1)
-  zscore  <- cox.out$coeff / sqrt(nobs * cox.out$var)
+  zscore  <- cox.out$coeff / sqrt(cox.out$var)
 
   std  <- list(time = outcome,
                status = event,
-               expr = (x-mean(x))/sd(x))
+               expr = (x-mean(x,na.rm=TRUE))/sd(x,na.rm=TRUE))
   cox.stdout  <- coxph( Surv(time,status) ~ expr, data=std, na.action = na.omit ) 
   stdbeta  <- cox.stdout$coeff
   
@@ -530,7 +530,7 @@ check.length  <- function(x,wh){
   nb  <- length(tmp)-na
   
   if(na==0 || nb==0)  sp  <- sd(x)
-  else  sp  <- (na*(sd(a)^2)+nb*(sd(b)^2))/length(x)
+  else  sp  <- (na*(sd(a,na.rm=TRUE)^2)+nb*(sd(b,na.rm=TRUE)^2))/length(x)
 
   stdx  <- x/sqrt(sp)
   regstd  <- glm(event~stdx,family=binomial,na.action = na.omit)
@@ -559,8 +559,7 @@ check.length  <- function(x,wh){
  for(i in 1:nn){
   matches1<-match(geneuid,geneNames(exprs(x)[[i]]))
   exprs1  <- exprs(exprs(x)[[i]])[matches1,]
-  exprs1[is.na(exprs1)]  <-  0
-
+  
   pcor[[i]]  <- cor(t(exprs1),use="pairwise.complete.obs",method=method)
   nnote[i]  <-notes(exprs(x)[[i]])
   if(is.null(notes(exprs(x)[[i]]))|is.na(notes(exprs(x)[[i]]))|notes(exprs(x)[[i]])=="") nnote[i]<-paste("study",i,sep=" ")
@@ -706,7 +705,8 @@ check.length  <- function(x,wh){
   if(is.null(main)) main<-paste("Integrated Correlation\n\nGene",UID[mmatches])
   cx<-cp[[1]][mmatches,][-mmatches]
   cy<-cp[[2]][mmatches,][-mmatches]
-  score<-max(cc)
+  if(is.null(geneid)) score<-max(cc)
+  else score<-cc[mmatches]
   par(oma=c(0,0,0,3))
   if(is.na(xlab)) plot(as.vector(cx),as.vector(cy),ylab=ylab,xlab=paste("CORR = ",as.character(signif(score,digit=3))),main=main,...)
   else plot(as.vector(cx),as.vector(cy),ylab=ylab,xlab=paste("\n",xlab,"\nCORR = ",as.character(signif(score,digit=3))),main=main,...)

@@ -31,7 +31,7 @@
 
 \section{Introduction}
 
-Mergemaid is designed to facilitate multi-study analysis.  The merging function
+MergeMaid is designed to facilitate multi-study analysis.  The merging function
 generates objects that can efficiently support a variety of joint
 analyses.  Visualization tools allow for exploration of the data
 without requiring normalization across platforms.  
@@ -55,7 +55,7 @@ Version 1.0 of MergeMaid includes the following primary functions, with correspo
 In addition, there are a number of functions for the manipulation, retrieval and visualization of data.  These functions depend on the data class for which they are defined and will be discussed below. 
 \begin{description}
 \item[The mergeExprs function and the mergeExprSet class] 
-The primary data class in the MergeMaid package is the \verb+mergeExprSet+, based on the exprSet class defined in bioconductor. mergeExprs returns an object of class \verb+mergeExprSet+, required for all
+The primary data class in the MergeMaid package is the \verb+mergeExprSet+, based on the exprSet class defined in Bioconductor. 'mergeExprs' returns an object of class \verb+mergeExprSet+, required for all
 analytic functions included in the package.  A \verb+mergeExprSet+ object contains the following slots
 
 \begin{center} 
@@ -98,7 +98,7 @@ There are a number of functions to access and manipulate the data in a \verb+mer
   \end{tabular} 
 \end{center}  
  The two main analytic functions in the package are defined for \verb+mergeExprSet+ objects as well, but are discussed in separate sections, as each has an associated class.  
-\item[The intCor function and the mergeCor class]  When working with data from different sources is to important to identify those genes which are measured in similar ways in the various datasets, and can be used in joint analyses.  
+\item[The intCor function and the mergeCor class]  When working with data from different sources is important to identify those genes which are measured in similar ways in the various datasets, and can be used in joint analyses.  
 
 MergeMaid includes a gene reproducibility index called the {\bf integrative correlation coefficient} and calculated using the function \verb+intCor+. Within each study, and for each pair of genes, we calculate the 
 correlation coefficient of expression values across subjects.
@@ -116,7 +116,7 @@ The output from the \verb+intCor+ function is an object of class \verb+mergeCor+
   \begin{tabular}{|lp{5in}|}
     \hline 
     {\it cors} & a list of correlation matrices, one per study, indexed by gene\\ 
-    {\it pairs.cors} & matrix containing the integrative correlation for each pair of studies. \\ \hline  
+    {\it pairwise.cors} & matrix containing the integrative correlation for each pair of studies. \\ \hline  
   \end{tabular} 
 \end{center}  
 
@@ -130,7 +130,7 @@ The methods available for this class are:
   \begin{tabular}{|lp{5in}|}
     \hline 
 {\it cors} &Accessor function for the cors slot. \\
-{\it pairs.cors} &Accessor function for the pairwise.cors slot \\
+{\it pairwise.cors} &Accessor function for the pairwise.cors slot \\
 {\it integrative.cors} &Accessor function, returns total integrative correlation  for each gene. \\
    {\it plot} &Draw scatterplots to compare correlations of genes. \\ \hline
 
@@ -164,7 +164,7 @@ Methods for this class include:
  \end{tabular} 
 \end{center}  
 
-The plot function is actually defined for the matrix class, rather than for the mergeCoeff class.  The usual syntax is \verb+plot(coeff(mergecoeff))+ so that the coefficients are selected.
+The plot function is actually defined for the matrix class, rather than for the mergeCoeff class.  The usual syntax is \verb+plot(coeff(mergeCoeff))+ so that the coefficients are selected.
 \end{description}
 
 
