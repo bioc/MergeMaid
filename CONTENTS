@@ -1,0 +1,53 @@
+Entry: mergeExprs
+Aliases: mergeExprs
+Keywords: 
+Description: Merge gene expression data
+URL: ../../../library/MergeMaid/html/mergeExprs.html
+
+Entry: intcor
+Aliases: intcor
+Keywords: 
+Description: Calculates the pairwise correlation for each pair of studies
+URL: ../../../library/MergeMaid/html/intcor.html
+
+Entry: modelOutcome
+Aliases: modelOutcome
+Keywords: 
+Description: Fit different regression model for each row of the gene
+URL: ../../../library/MergeMaid/html/modelOutcome.html
+
+Entry: mergeExprSet-class
+Aliases: mergeExprSet-class
+Keywords: 
+Description: Class for merged microarray data
+URL: ../../../library/MergeMaid/html/mergeExprSet.html
+
+Entry: mergeCoeff-class
+Aliases: mergeCoeff-class
+Keywords: 
+Description: Class for storing regression coefficeints
+URL: ../../../library/MergeMaid/html/mergeCoeff.html
+
+Entry: mergeCor-class
+Aliases: mergeCor-class
+Keywords: 
+Description: Class for storing correlation coefficeints
+URL: ../../../library/MergeMaid/html/mergeCor.html
+
+Entry: intersection
+Aliases: intersection
+Keywords: 
+Description: Obtain exprSet with all common genes in a mergeExprSet
+URL: ../../../library/MergeMaid/html/intersection.html
+
+Entry: intcorDens
+Aliases: intcorDens
+Keywords: 
+Description: Plot of density functions of integrative correlations
+URL: ../../../library/MergeMaid/html/intcorDens.html
+
+Entry: mergeData
+Aliases: mergeData
+Keywords: 
+Description: MergeMaid instance data
+URL: ../../../library/MergeMaid/html/mergeData.html

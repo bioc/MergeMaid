@@ -1,0 +1,185 @@
+% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+%\VignetteIndexEntry{MergeMaid primer}
+%\VignetteKeywords{MergeMaid, expression}
+%\VignetteDepends{MergeMaid}
+%\VignettePackage{MergeMaid}
+%documentclass[12pt, a4paper]{article}
+\documentclass[12pt]{article}
+
+\usepackage{amsmath,pstricks}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+
+\textwidth=6.2in
+\textheight=8.5in
+%\parskip=.3cm
+\oddsidemargin=.1in
+\evensidemargin=.1in
+\headheight=-.3in
+
+\newcommand{\scscst}{\scriptscriptstyle}
+\newcommand{\scst}{\scriptstyle}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\author{Xiaogang Zhong, Leslie Cope, Elizabeth Garrett-Mayer, Giovanni Parmigiani}
+\begin{document}
+\title{Description of MergeMaid}
+
+\maketitle
+
+\section{Introduction}
+
+Mergemaid is designed to facilitate multi-study analysis.  The merging function
+generates objects that can efficiently support a variety of joint
+analyses.  Visualization tools allow for exploration of the data
+without requiring normalization across platforms.  
+
+
+
+Version 1.0 of MergeMaid includes the following primary functions, with corresponding data classes
+
+\begin{center} 
+  \begin{tabular}{|lp{5in}|}
+    \hline 
+    {\it mergeExprs} & Merge Datasets into an object of class {\bf mergeExprSet}.\\ 
+    {\it intCor} & Compute integrative correlation coefficients,\\
+& returns an object of class {\bf mergeCor}.\\
+    {\it modelOutcome} & Fit various models to the data, \\ 
+    & models currently available include linear and logistic regression, and Cox hazards,\\
+& returns an object of class {\bf mergeCoeff}.
+  \end{tabular} 
+\end{center}  
+
+In addition, there are a number of functions for the manipulation, retrieval and visualization of data.  These functions depend on the data class for which they are defined and will be discussed below. 
+\begin{description}
+\item[The mergeExprs function and the mergeExprSet class] 
+The primary data class in the MergeMaid package is the \verb+mergeExprSet+, based on the exprSet class defined in bioconductor. mergeExprs returns an object of class \verb+mergeExprSet+, required for all
+analytic functions included in the package.  A \verb+mergeExprSet+ object contains the following slots
+
+\begin{center} 
+  \begin{tabular}{|lp{5in}|}
+    \hline 
+    {\it data} & a list of \verb+ExprSet+ objects, one per study\\ 
+    {\it geneStudy} & incidence matrix indicating which genes are measured in each study. \\
+    {\it notes} & \\\hline  
+  \end{tabular} 
+\end{center}  
+The standard way to build a \verb+mergeExprSet+ object is with the function \verb+mergeExprs+.
+This function accepts expression data in a variety of formats, including 
+\verb+ExprSet+ objects, simple matrices of expression values and other \verb+mergeExprSet+s.  Any combination of these is acceptable.    Merging is based on user-supplied gene ids (e.g. Genbank, Unigene, or LocusLink ID's).  These IDs should make up the rownames for each expression data matrix.   Frequently an 
+expression array will include multiple probesets for some genes, and
+these may be assigned the same geneid.  This presents a special problem
+for the merging of data across platforms, becoming important when 
+carrying out an analysis on the merged data, (e.g. regression or 
+survival analysis) for which genes need to be 
+unambiguously matched.  In general, appropriate measures are left up to 
+the user at ID assignment.  To prevent potential 
+problems, replicates within a dataset which still share the same ID 
+are averaged during the merging process.
+
+There are a number of functions to access and manipulate the data in a \verb+mergeExprSet+.  
+\begin{center} 
+  \begin{tabular}{|lp{5in}|}
+    \hline 
+    {\it exprs} & returns the contents of the \verb+data+ slot\\
+{\it geneStudy } & returns the contents of the \verb+data+ slot\\
+{\it notes} & returns the contents of the \verb+data+ slot\\
+{\it names} & returns study names\\
+{\it geneNames} & returns the entire list of gene IDs\\
+{\it phenoData } & returns a list containing the phenodata (if any) included for each study\\
+{\it [} & returns a \verb+mergeExprSet+ object containing only the indicated studies\\
+{\it intersection} & returns a single \verb+ExprSet+ containing all studies and all common genes\\
+{\it notes$<$-} & replaces the contents of the \verb+data+ slot\\
+{\it names$<$-} & replaces the study names\\
+{\it geneNames$<$-} & replaces gene IDs.  \\
+ \hline  
+  \end{tabular} 
+\end{center}  
+ The two main analytic functions in the package are defined for \verb+mergeExprSet+ objects as well, but are discussed in separate sections, as each has an associated class.  
+\item[The intCor function and the mergeCor class]  When working with data from different sources is to important to identify those genes which are measured in similar ways in the various datasets, and can be used in joint analyses.  
+
+MergeMaid includes a gene reproducibility index called the {\bf integrative correlation coefficient} and calculated using the function \verb+intCor+. Within each study, and for each pair of genes, we calculate the 
+correlation coefficient of expression values across subjects.
+By examining whether, for a specific gene, these correlations agree
+across studies we can quantify the reproducibility of results 
+without relying on direct comparison of expression across platforms. 
+The 
+integrative correlations provides a reproducibility score for each gene.  
+  This analysis is unsupervised in that consistency is
+measured without using information about sample phenotypes. 
+ 
+The output from the \verb+intCor+ function is an object of class \verb+mergeCor+, containing integrative correlation coefficients for a single \verb+mergeExprSet+ object.   Such an object contains the following slots
+
+\begin{center} 
+  \begin{tabular}{|lp{5in}|}
+    \hline 
+    {\it cors} & a list of correlation matrices, one per study, indexed by gene\\ 
+    {\it pairs.cors} & matrix containing the integrative correlation for each pair of studies. \\ \hline  
+  \end{tabular} 
+\end{center}  
+
+ If $n$ is the number of studies
+ then for $i < j \leq n$, the pairwise correlation of correlations for studies $i$ and $j$ is stored in column $(i-1)*(n-1)-(i-2)*(i-1)/2 + j-i$ of the pairwise.cors slot.  
+
+The {\it total integrative correlation} for each gene is obtained by averaging the $n(n-1)/2$ pairwise integrative correlations.
+ 
+The methods available for this class are:
+\begin{center} 
+  \begin{tabular}{|lp{5in}|}
+    \hline 
+{\it cors} &Accessor function for the cors slot. \\
+{\it pairs.cors} &Accessor function for the pairwise.cors slot \\
+{\it integrative.cors} &Accessor function, returns total integrative correlation  for each gene. \\
+   {\it plot} &Draw scatterplots to compare correlations of genes. \\ \hline
+
+ \end{tabular} 
+\end{center}  
+
+In addition, there is a function called \verb+intcorDens+, which plots a smooth density curve for the true distribution of integrative correlation coefficients as well as two null distribution density curves obtained by permuting expression values.  These plots can be used to help identify a useful threshold of reproducibility.  Since the permutation required the original expression data, this function is defined for mergeExprSet objects rather than for mergeCor objects, but in spirit belongs here.
+
+\item[The modelOutcome function and the mergeCoeff class] The function \verb+modelOutcome+ calculates gene/study  specific coefficients for a variety of models.  The output from the \verb+modelOutcome+ function is an object of class \verb+mergeCoeff+  Such an object contains the following slots
+
+\begin{center} 
+  \begin{tabular}{|lp{5in}|}
+    \hline 
+    {\it coeffs} & a matrix of coefficients, rows=genes, columns=studies\\ 
+    {\it coeff.std} & matrix of standardized coefficients \\ 
+ {\it zscore} & matrix of zscores for the coefficients \\ \hline  
+  \end{tabular} 
+\end{center}  
+
+Only 3 models are implemented in the first version of MergeMaid: linear regression, logistic regression and cox hazard rate.  
+ 
+Methods for this class include:
+\begin{center} 
+  \begin{tabular}{|lp{5in}|}
+    \hline 
+{\it coeff} &Accessor function for the coeff slot. \\
+{\it coeffstd} &Accessor function for the coeff.std slot. \\
+{\it zscore} &Accessor function for the zscore slot. \\
+   {\it plot} &Draw scatterplots to compare coefficients from different studies.\\  \hline
+
+ \end{tabular} 
+\end{center}  
+
+The plot function is actually defined for the matrix class, rather than for the mergeCoeff class.  The usual syntax is \verb+plot(coeff(mergecoeff))+ so that the coefficients are selected.
+\end{description}
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
+

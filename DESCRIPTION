@@ -1,0 +1,22 @@
+Package: MergeMaid
+Version: 2.0-1
+Date: 2004-5-27
+Title: Merge Maid
+Author: Xiaogang Zhong <zhong@ams.jhu.edu> Leslie Cope <cope@jhu.edu> Elizabeth Garrett
+        <esg@jhu.edu> Giovanni Parmigiani <gp@jhu.edu>
+Maintainer: Xiaogang Zhong <zhong@ams.jhu.edu>
+Description: The functions in this R extension are intended for
+        cross-study comparison of gene expression array data. Required
+        from the user is gene expression matrices, their corresponding
+        gene-id vectors and other useful information, and they could 
+	be 'list','matrix','exprSet'. The main function is 'mergeExprs' 
+	which transforms the input objects into data in the merged format, 
+	such that common genes in different datasets can be easily found. 
+	And the function 'intcor' calculate the correlation coefficients.
+	Other functions use the output from 'modelOutcome' to graphically
+        display the results and cross-validate associations of gene
+        expression data with survival.
+Depends: R (>= 1.7.0), survival
+License: GPL version 2 or higher
+URL: http://astor.som.jhmi.edu/MergeMaid
+
