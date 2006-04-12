@@ -16,28 +16,28 @@ Keywords:
 Description: Fit different regression model for each row of the gene
 URL: ../../../library/MergeMaid/html/modelOutcome.html
 
-Entry: mergeExprSet-class
-Aliases: mergeExprSet-class
+Entry: class.mergeESet
+Aliases: class.mergeESet
 Keywords: 
 Description: Class for merged microarray data
-URL: ../../../library/MergeMaid/html/mergeExprSet.html
+URL: ../../../library/MergeMaid/html/class.mergeESet.html
 
-Entry: mergeCoeff-class
-Aliases: mergeCoeff-class
+Entry: class.mergeCoeff
+Aliases: class.mergeCoeff
 Keywords: 
 Description: Class for storing regression coefficeints
-URL: ../../../library/MergeMaid/html/mergeCoeff.html
+URL: ../../../library/MergeMaid/html/class.mergeCoeff.html
 
-Entry: mergeCor-class
-Aliases: mergeCor-class
+Entry: class.mergeCor
+Aliases: class.mergeCor
 Keywords: 
 Description: Class for storing correlation coefficeints
-URL: ../../../library/MergeMaid/html/mergeCor.html
+URL: ../../../library/MergeMaid/html/class.mergeCor.html
 
 Entry: intersection
 Aliases: intersection
 Keywords: 
-Description: Obtain exprSet with all common genes in a mergeExprSet
+Description: Obtain eSet with all common genes in a mergeESet
 URL: ../../../library/MergeMaid/html/intersection.html
 
 Entry: intcorDens

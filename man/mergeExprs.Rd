@@ -13,26 +13,26 @@
 }
 
 \arguments{
-   \item{...}{Input objects can be any combination of mergeExprSet, exprSet, matrix or a list. 
+   \item{...}{Input objects can be any combination of mergeESet, eSet, matrix or a list. 
 A list should have the following slots:
 expression matrix,
 pheno data matrix, 
 gene names vector,
 notes. 
 The order of the four slots is fixed.
-A matrix should have genes ids as its row names, as should the exprs slot of an exprSet. 
+A matrix should have genes ids as its row names, as should the exprs slot of an eSet. 
 Since merging depends on geneids, these conventions are essential.}
    
 }
 
-\value{The output is a mergeExprSet.}
+\value{The output is a mergeESet.}
 
-\details{The mergeExprSet object is the standard input for all functions in the MergeMaid package. Use the mergeExprs function when creating mergeExprSet objects to ensure that all necessary information is available for further analysis. }
+\details{The mergeESet object is the standard input for all functions in the MergeMaid package. Use the mergeExprs function when creating mergeESet objects to ensure that all necessary information is available for further analysis. }
 
-\seealso{\code{\link{mergeExprSet-class}}}
+\seealso{\code{\link{mergeESet-class}}}
 
 \examples{
- 
+  if(require(Biobase) & require(MASS)){
   data(mergeData)
   merged  <-mergeExprs(sample1,sample2,sample3)
 
@@ -41,7 +41,7 @@ Since merging depends on geneids, these conventions are essential.}
   rownames(mm)<-geneNames(sample2)
   merge.m<-mergeExprs(sample1,mm,sample2)
   intcor.m<-intCor(merge.m)
-  plot(intcor.m)
+  plot(merge.m)
 
   rr<-rnorm(200*50,0,1)
   mm2<-matrix(rr,200,50)
@@ -49,12 +49,12 @@ Since merging depends on geneids, these conventions are essential.}
   ll<-list(mm2,ph.ll,geneNames(sample2),"list 2")
   merge.t<-mergeExprs(sample1,mm,sample2,ll)
   intcor.t<-intCor(merge.t)
-  plot(intcor.t)
+  plot(merge.t)
 
   merge.a<-mergeExprs(sample3,merge.m,ll)
   inter<-intersection(merge.a)
   summary(merge.a)
-  
+  }
 }
 
 \keyword{manip}

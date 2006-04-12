@@ -1,9 +1,9 @@
 intCor		  Correlation of Correlations calculation.
 intcorDens	  Plot of density functions of integrative correlations.
-intersection	  Obtain exprSet with all common genes in a mergeExprSet.
-mergeCor-class	A class for storing data relevant to integrative correlation coefficients.
-mergeCoeff-class  A class for storing regression coefficients.
+intersection	  Obtain eSet with all common genes in a mergeESet.
+class.mergeCor	A class for storing data relevant to integrative correlation coefficients.
+class.mergeCoeff  A class for storing regression coefficients.
 mergeData	  MergeMaid instance data for merging.
 mergeExprs      Merges gene expression data from different studies.
-mergeExprSet-class	A class for merged microarray data, and methods for processing them.
+class.mergeESet	A class for merged microarray data, and methods for processing them.
 modelOutcome		Compare regression coefficients across studies.

@@ -9,10 +9,10 @@
 }
 
 \arguments{
-   \item{x}{Object of class mergeExprSet.}
+   \item{x}{Object of class mergeESet.}
    \item{method}{Method specifies the model used to generate coefficients.  At this time only linear regression, logistic regression, and Cox hazard rates are implemented.}
    \item{outcome, outcome2}{The format for the outcome variable depends on the model used.  For linear regression, outcome should be a continous response variable, for logistic regression, it should be a binary response variable, and for Cox hazard rates it should be time of event.  Outcome 2 is currently used only in the calculation of hazard rates, and should be a binary variable indicating censoring status for each subject.
-If outcome is a vector of length equal to number of studies, then each element represents the column in the exprSet phenoData slot for that study.  If outcome is a list, then each list element should have actual outcome data for the corresponding study. }
+If outcome is a vector of length equal to number of studies, then each element represents the column in the eSet phenoData slot for that study.  If outcome is a list, then each list element should have actual outcome data for the corresponding study. }
 \item{...}{Not implemented at this time}
 }
 
@@ -22,7 +22,7 @@ If outcome is a vector of length equal to number of studies, then each element r
 
 
 \examples{
-  
+  if(require(Biobase) & require(MASS) & require(survival)){
   data(mergeData)
   merged  <- mergeExprs(sample1,sample2,sample3)
 
@@ -46,7 +46,7 @@ If outcome is a vector of length equal to number of studies, then each element r
   cox.coeff<-modelOutcome(merged,outcome2=even,outcome=out,method="cox")
   plot(coeff(cox.coeff))
 
-  
+  }
 }
 
 \keyword{models}

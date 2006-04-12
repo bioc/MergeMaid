@@ -2,17 +2,18 @@
 \alias{intCor}
 \title{Correlation of Correlations}
 
-\description{Given a mergeExprSet, this function calculates the study specific
+\description{Given a mergeESet, this function calculates the study specific
   correlation matrices, and, for each gene, the correlation of
   correlations. }
 
 \usage{
-   intCor(x,method= c("pearson", "kendall", "spearman"),...)
+   intCor(x,method= c("pearson", "spearman"),exact,...)
 }
 
 \arguments{
-   \item{x}{Object of class mergeExprSet.}
-   \item{method}{Method used to calculate correlation coefficient.}
+   \item{x}{Object of class mergeESet.}
+   \item{method}{Method used to calculate correlation coefficient. If exact is TRUE, the available methods to use is "spearman" and "pearson"; If exact is FALSE, the available methods to use is "pearson".}
+  \item{exact}{If exact is TRUE, we use the standard method the calculate  the integrative correlation; If exact is FALSE, we use the approximate method the calculate.}
 \item{...}{Not implemented at this time}
 }
 
@@ -25,18 +26,24 @@ Within each study, we calculate the correlation coefficient between gene g, and 
   \code{\link{mergeCor-class}},\code{\link{intcorDens}}}
 
 \examples{
-  
+
+if(require(Biobase) & require(MASS)){
   data(mergeData)
   merged  <-mergeExprs(sample1,sample2,sample3)
   corcor  <-intCor(merged,method="spearman")
-  plot(corcor)
+  
+  plot(merged)
   hist(corcor)
 
+  corcor  <-intCor(merged,method="pearson",exact=FALSE)
+  corcor  <-intCor(merged[1:2])
+  corcor  <-intCor(merged,exact=TRUE)
+
   vv<-c(1,3)
-  corcor1  <-intCor(merged[vv],method="kendall")
-  plot(corcor1,xlab="study A",ylab="study B",main="CORRELATION OF CORRELATION",col=3,pch=4)
+  corcor1  <-intCor(merged[vv])
+  plot(merged,xlab="study A",ylab="study B",main="CORRELATION OF CORRELATION",col=3,pch=4)
   hist(corcor1,xlab="CORRELATION OF CORRELATION")
-  
+ }  
 }
 
 \keyword{univar}
