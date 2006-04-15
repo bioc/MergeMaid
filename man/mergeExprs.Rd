@@ -13,23 +13,23 @@
 }
 
 \arguments{
-   \item{...}{Input objects can be any combination of mergeESet, eSet, matrix or a list. 
+   \item{...}{Input objects can be any combination of mergeExpressionSet, ExpressionSet, matrix or a list. 
 A list should have the following slots:
 expression matrix,
 pheno data matrix, 
 gene names vector,
 notes. 
 The order of the four slots is fixed.
-A matrix should have genes ids as its row names, as should the exprs slot of an eSet. 
+A matrix should have genes ids as its row names, as should the exprs slot of an ExpressionSet. 
 Since merging depends on geneids, these conventions are essential.}
    
 }
 
-\value{The output is a mergeESet.}
+\value{The output is a mergeExpressionSet.}
 
-\details{The mergeESet object is the standard input for all functions in the MergeMaid package. Use the mergeExprs function when creating mergeESet objects to ensure that all necessary information is available for further analysis. }
+\details{The mergeExpressionSet object is the standard input for all functions in the MergeMaid package. Use the mergeExprs function when creating mergeExpressionSet objects to ensure that all necessary information is available for further analysis. }
 
-\seealso{\code{\link{mergeESet-class}}}
+\seealso{\code{\link{mergeExpressionSet-class}}}
 
 \examples{
   if(require(Biobase) & require(MASS)){
@@ -45,7 +45,7 @@ Since merging depends on geneids, these conventions are essential.}
 
   rr<-rnorm(200*50,0,1)
   mm2<-matrix(rr,200,50)
-  ph.ll<-as.data.frame(rbinom(200,1,.5))
+  ph.ll<-as.data.frame(rbinom(50,1,.5))
   ll<-list(mm2,ph.ll,geneNames(sample2),"list 2")
   merge.t<-mergeExprs(sample1,mm,sample2,ll)
   intcor.t<-intCor(merge.t)

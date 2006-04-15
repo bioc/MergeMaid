@@ -33,7 +33,7 @@ merging function generates objects that can efficiently support a
 variety of joint analyses.  Visualization tools allow for
 exploration of the data without requiring normalization across
 platforms. We have updated the package by replacing the exprSet
-class with the eSet class and adding a quick approximate calculation
+class with the ExpressionSet class and adding a quick approximate calculation
 of the integrative correlation.
 
 Version 2.1.6 of MergeMaid includes the following primary functions,
@@ -42,7 +42,7 @@ with corresponding data classes
 \begin{center}
   \begin{tabular}{|lp{5in}|}
     \hline
-    {\it mergeExprs} & Merge Datasets into an object of class {\bf mergeESet}.\\
+    {\it mergeExprs} & Merge Datasets into an object of class {\bf mergeExpressionSet}.\\
     {\it intCor} & Compute integrative correlation coefficients,\\
 & returns an object of class {\bf mergeCor}.\\
     {\it modelOutcome} & Fit various models to the data, \\
@@ -55,25 +55,25 @@ In addition, there are a number of functions for the manipulation,
 retrieval and visualization of data.  These functions depend on the
 data class for which they are defined and will be discussed below.
 \begin{description}
-\item[The mergeExprs function and the mergeESet class]
+\item[The mergeExprs function and the mergeExpressionSet class]
 The primary data class in the MergeMaid package is the
-\verb+mergeESet+, based on the eSet class defined in Bioconductor.
-'mergeExprs' returns an object of class \verb+mergeESet+, required
+\verb+mergeExpressionSet+, based on the ExpressionSet class defined in Bioconductor.
+'mergeExprs' returns an object of class \verb+mergeExpressionSet+, required
 for all analytic functions included in the package.  A
-\verb+mergeESet+ object contains the following slots
+\verb+mergeExpressionSet+ object contains the following slots
 
 \begin{center}
   \begin{tabular}{|lp{5in}|}
     \hline
-    {\it data} & a list of \verb+ESet+ objects, one per study\\
+    {\it data} & a list of \verb+ExpressionSet+ objects, one per study\\
     {\it geneStudy} & incidence matrix indicating which genes are measured in each study. \\
     {\it notes} & \\\hline
   \end{tabular}
 \end{center}
-The standard way to build a \verb+mergeESet+ object is with the
+The standard way to build a \verb+mergeExpressionSet+ object is with the
 function \verb+mergeExprs+. This function accepts expression data in
-a variety of formats, including \verb+eSet+ objects, simple matrices
-of expression values and other \verb+mergeESet+s.  Any combination
+a variety of formats, including \verb+ExpressionSet+ objects, simple matrices
+of expression values and other \verb+mergeExpressionSet+s.  Any combination
 of these is acceptable.    Merging is based on user-supplied gene
 ids (e.g. Genbank, Unigene, or LocusLink ID's). These IDs should
 make up the rownames for each expression data matrix.   Frequently
@@ -88,7 +88,7 @@ a dataset which still share the same ID are averaged during the
 merging process.
 
 There are a number of functions to access and manipulate the data in
-a \verb+mergeESet+.
+a \verb+mergeExpressionSet+.
 \begin{center}
   \begin{tabular}{|lp{5in}|}
     \hline
@@ -98,8 +98,8 @@ a \verb+mergeESet+.
 {\it names} & returns study names\\
 {\it geneNames} & returns the entire list of gene IDs\\
 {\it phenoData } & returns a list containing the phenodata (if any) included for each study\\
-{\it [} & returns a \verb+mergeESet+ object containing only the indicated studies\\
-{\it intersection} & returns a single \verb+eSet+ containing all studies and all common genes\\
+{\it [} & returns a \verb+mergeExpressionSet+ object containing only the indicated studies\\
+{\it intersection} & returns a single \verb+ExpressionSet+ containing all studies and all common genes\\
 {\it notes$<$-} & replaces the contents of the \verb+data+ slot\\
 {\it names$<$-} & replaces the study names\\
 {\it geneNames$<$-} & replaces gene IDs.  \\
@@ -107,7 +107,7 @@ a \verb+mergeESet+.
 for genes. \\ \hline
   \end{tabular}
 \end{center}
- The two main analytic functions in the package are defined for \verb+mergeESet+ objects as well, but are discussed in separate sections, as each has an associated class.
+ The two main analytic functions in the package are defined for \verb+mergeExpressionSet+ objects as well, but are discussed in separate sections, as each has an associated class.
 \item[The intCor function and the mergeCor class]  When working with data from different sources is important to identify those genes which are measured in similar ways in the various datasets, and can be used in joint analyses.
 
 MergeMaid includes a gene reproducibility index called the {\bf
@@ -124,7 +124,7 @@ measured without using information about sample phenotypes.
 
 The output from the \verb+intCor+ function is an object of class
 \verb+mergeCor+, containing integrative correlation coefficients for
-a single \verb+mergeESet+ object.   Such an object contains the
+a single \verb+mergeExpressionSet+ object.   Such an object contains the
 following slots
 
 \begin{center}
@@ -160,7 +160,7 @@ integrative correlation coefficients as well as the null
 distribution density curve obtained by permuting expression values.
 These plots can be used to help identify a useful threshold of
 reproducibility. Since the permutation required the original
-expression data, this function is defined for mergeESet objects
+expression data, this function is defined for mergeExpressionSet objects
 rather than for mergeCor objects, but in spirit belongs here.
 
 \item[The modelOutcome function and the mergeCoeff class] The function \verb+modelOutcome+ calculates gene/study  specific coefficients for a variety of models.  The output from the \verb+modelOutcome+ function is an object of class \verb+mergeCoeff+  Such an object contains the following slots

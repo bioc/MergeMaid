@@ -45,7 +45,7 @@
 \details{ If 'n' is the number of studies
  then for i < j <= n, the pairwise correlation of correlations for studies i and j is stored in column ((i-1)*(n-1)-(i-2)*(i-1)/2 + j-i) of the pairwise.cors slot. }
 
-\seealso{ \code{\link{mergeCor-class}},\code{\link{intCor}},\code{\link{modelOutcome}}, \code{\link{mergeESet-class}}}
+\seealso{ \code{\link{mergeCor-class}},\code{\link{intCor}},\code{\link{modelOutcome}}, \code{\link{mergeExpressionSet-class}}}
 
 \examples{
   if(require(Biobase) & require(MASS)){

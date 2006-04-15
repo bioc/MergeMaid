@@ -48,7 +48,7 @@
 }
 
 
-\seealso{ \code{\link{mergeExprs}},\code{\link{modelOutcome}}, \code{\link{mergeESet-class}}}
+\seealso{ \code{\link{mergeExprs}},\code{\link{modelOutcome}}, \code{\link{mergeExpressionSet-class}}}
 
 
 \examples{

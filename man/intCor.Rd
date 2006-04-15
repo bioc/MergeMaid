@@ -2,7 +2,7 @@
 \alias{intCor}
 \title{Correlation of Correlations}
 
-\description{Given a mergeESet, this function calculates the study specific
+\description{Given a mergeExpressionSet, this function calculates the study specific
   correlation matrices, and, for each gene, the correlation of
   correlations. }
 
@@ -11,7 +11,7 @@
 }
 
 \arguments{
-   \item{x}{Object of class mergeESet.}
+   \item{x}{Object of class mergeExpressionSet.}
    \item{method}{Method used to calculate correlation coefficient. If exact is TRUE, the available methods to use is "spearman" and "pearson"; If exact is FALSE, the available methods to use is "pearson".}
   \item{exact}{If exact is TRUE, we use the standard method the calculate  the integrative correlation; If exact is FALSE, we use the approximate method the calculate.}
 \item{...}{Not implemented at this time}

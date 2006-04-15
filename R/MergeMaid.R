@@ -3,7 +3,7 @@ library(survival)
 library(MASS)
 
 ###  define class
-setClass("mergeESet",representation(data="list",geneStudy="matrix",notes="character"))
+setClass("mergeExpressionSet",representation(data="list",geneStudy="matrix",notes="character"))
 ## define two new classes for the output from corcor
 ## and the output from corcox, corlinear and corlogistic
 
@@ -49,18 +49,18 @@ if(is.null(getGeneric("zscore<-"))) setGeneric("zscore<-",function(x,value) stan
 
 ### methods
 ### accessor functions
-setMethod("exprs","mergeESet",function(object) return(object@data))
-setMethod("geneNames","mergeESet",function(object) return(rownames(object@geneStudy)))
-setMethod("names","mergeESet",function(x) return(names(x@data)))
-setMethod("notes","mergeESet",function(object) return(object@notes))
+setMethod("exprs","mergeExpressionSet",function(object) return(object@data))
+setMethod("geneNames","mergeExpressionSet",function(object) return(rownames(object@geneStudy)))
+setMethod("names","mergeExpressionSet",function(x) return(names(x@data)))
+setMethod("notes","mergeExpressionSet",function(object) return(object@notes))
 
-setMethod("phenoData","mergeESet", function(object){
+setMethod("phenoData","mergeExpressionSet", function(object){
            x=exprs(object)
            y=list()
            for(i in 1:length(x)){ y[[i]]=pData(x[[i]])}
            return(y)})
-setMethod("length","mergeESet",function(x) return(length(x@data)))
-setMethod("geneStudy","mergeESet",function(x) return(x@geneStudy))
+setMethod("length","mergeExpressionSet",function(x) return(length(x@data)))
+setMethod("geneStudy","mergeExpressionSet",function(x) return(x@geneStudy))
 setMethod("coeff","mergeCoeff",function(x){
            y<-list()
            y[[1]]<-x@coeff
@@ -79,17 +79,17 @@ setMethod("zscore","mergeCoeff",function(x){
            y[[2]]<-"zscore"
            y[[3]]<-x@method
            return(y)}) 
-setMethod("modelOutcome","mergeESet",function(x,outcome,outcome2=NULL,method=c("linear","logistic","cox"),...) return(.model.outcome(x=x,outcome=outcome,outcome2=outcome2,method=method,...))) 
-setMethod("intCor","mergeESet",function(x, method = c("pearson", "spearman"),exact=TRUE,...) return(.intcor(x=x,method=method,exact=exact,...))) 
+setMethod("modelOutcome","mergeExpressionSet",function(x,outcome,outcome2=NULL,method=c("linear","logistic","cox"),...) return(.model.outcome(x=x,outcome=outcome,outcome2=outcome2,method=method,...))) 
+setMethod("intCor","mergeExpressionSet",function(x, method = c("pearson", "spearman"),exact=TRUE,...) return(.intcor(x=x,method=method,exact=exact,...))) 
 setMethod("plot","list",function(x,y,...) return(.plot.mergeCoeff(x=x,y=y,...)))
-setMethod("plot","mergeESet",function(x,y,...) return(.plot.mergeESet(x=x,y=y,...)))
+setMethod("plot","mergeExpressionSet",function(x,y,...) return(.plot.mergeExpressionSet(x=x,y=y,...)))
 setMethod("hist","mergeCor",function(x,...) return(.hist.mergeCor(x=x,...)))
 setMethod("notes","mergeCor",function(object) return(object@notes))
-setMethod("intcorDens","mergeESet",function(x,method,...) return(.dens.mergeESet(x=x,method=method,...)))
-setMethod("summary","mergeESet",function(object,...)  return(.summary.mergeESet(object=object,...)))
+setMethod("intcorDens","mergeExpressionSet",function(x,method,...) return(.dens.mergeExpressionSet(x=x,method=method,...)))
+setMethod("summary","mergeExpressionSet",function(object,...)  return(.summary.mergeExpressionSet(object=object,...)))
 setMethod("integrative.cors","mergeCor",function(x,adjust,...) return(.integrative.cors(x=x,adjust=adjust,...)))
 
-setMethod("intersection","mergeESet", function(x){
+setMethod("intersection","mergeExpressionSet", function(x){
            nn<-length(x)
            tid<-geneNames(x)
            geneid  <- rep(1,nrow(x@geneStudy))
@@ -101,46 +101,42 @@ setMethod("intersection","mergeESet", function(x){
            note  <-""
            k<-0
            for(i in 1:nn){
-             mmatches<-match(geneuid,reporterNames(exprs(x)[[i]]))
-             assayData(exprs(x)[[i]])[[1]]<-assayData(exprs(x)[[i]])[[1]][mmatches,]
+             mmatches<-match(geneuid,featureNames(exprs(x)[[i]]))
+             tmp<-assayData(exprs(x)[[i]])[["exprs"]][mmatches,]
              if(i==1) {
-              ee<-assayData(exprs(x)[[i]])[[1]]
-              cnote[i]  <- ncol(assayData(exprs(x)[[i]])[[1]])
+              ee<-tmp
+              cnote[i]  <- ncol(tmp)
               k<-k+cnote[i]
               note<-paste(note,names(x)[i],": Column",1,"~Column",cnote[i],sep="")
              }
              else  {
-              ee<-cbind(ee,assayData(exprs(x)[[i]])[[1]])
-              cnote[i]  <- ncol(assayData(exprs(x)[[i]])[[1]])
+              ee<-cbind(ee,tmp)
+              cnote[i]  <- ncol(tmp)
               k<-k+cnote[i]
               note<-paste(note,", ",names(x)[i],": Column",k-cnote[i]+1,"~Column",k,sep="")
              }
            }
+	   rownames(ee)<-geneuid
 	   
-	   
-           #y=new("exprSet",exprs=ee)
-	   es <- list(es=ee)
-           pd <- data.frame(rep(NA,(ncol(es[[1]]))))
-	   if(is.null(colnames(es[[1]]))) sn=as.character(c(1:ncol(es[[1]])))
+	   pd <- data.frame(matrix(rep(NA,ncol(ee)),nr=ncol(ee)))
+	   if(is.null(colnames(ee))) sn=as.character(c(1:ncol(ee)))
            else {
 	    if(length(unique(colnames(ee)))!=ncol(ee)){
 	     ss=0
 	     cn <- rep(NA,ncol(ee))
 	     for(i in 1:nn){
-              cn[(ss+1):(ss+ncol(assayData(exprs(x)[[i]])[[1]]))]<-paste("study",i,colnames(assayData(exprs(x)[[i]])[[1]]),sep="")
-	      ss=ss+ncol(assayData(exprs(x)[[i]])[[1]])
+              cn[(ss+1):(ss+ncol(assayData(exprs(x)[[i]])[["exprs"]]))]<-paste("study",i,colnames(assayData(exprs(x)[[i]])[["exprs"]]),sep="")
+	      ss=ss+ncol(assayData(exprs(x)[[i]])[["exprs"]])
 	     }
 	     sn<-cn
 	    }
-	    else sn<-colnames(es[[1]])
-	   } 
+	    else sn<-colnames(ee)
+	   }
            row.names(pd)<-sn
-           pdata <- new("phenoData",pData=pd, varLabels=list(""))
-           y <-  new("eSet", phenoData=pdata, assayData=es,sampleNames=sn)
- 
-           y@reporterNames=geneuid
-           notes(y)=note
-           return(y)})
+	   colnames(ee)<-sn
+           pdat <- as(df2pD(pd),"AnnotatedDataFrame")
+           es <-  new("ExpressionSet", exprs=ee, phenoData=pdat)
+           return(es)})
 setMethod("pairwise.cors","mergeCor",function(x) return(x@pairwise.cors))
 setMethod("maxcors","mergeCor",function(x) return(x@maxcors))
 setMethod("integrative.cors","mergeCor",function(x){
@@ -175,47 +171,48 @@ data=exprs(x)[i]
     gs=geneStudy(x)
     wh=(1:dim(gs)[1])[apply(gs[,i],1,sum)>0]
     gs=gs[wh,i]
-return(new("mergeESet",data=data,geneStudy=gs,notes=notes))}}
+return(new("mergeExpressionSet",data=data,geneStudy=gs,notes=notes))}}
 
-setMethod("[", "mergeESet",
+setMethod("[", "mergeExpressionSet",
     function(x, i,j=NULL,drop=T) subsetmES(x, i, ...)
  )
 
 ### replacement functions
-setReplaceMethod("exprs", "mergeESet", function(object, value){
+setReplaceMethod("exprs", "mergeExpressionSet", function(object, value){
  object@data<-value
 object
 })
-setReplaceMethod("names", "mergeESet", function(x, value){
+setReplaceMethod("names", "mergeExpressionSet", function(x, value){
  names(x@data)<-value
 x
 })
-setReplaceMethod("geneNames", "mergeESet", function(object, value){
+setReplaceMethod("geneNames", "mergeExpressionSet", function(object, value){
 nn<-length(object)
 if(length(value)!=nrow(object@geneStudy)) stop("Replaced geneids should have the same length as the old genenames.") 
 tid<-geneNames(object)
 for(i in 1:nn){
- mmatches<-match(reporterNames(exprs(object)[[i]]),tid)
- exprs(object)[[i]]@reporterNames <- value[mmatches]
+ mmatches<-match(featureNames(exprs(object)[[i]]),tid)
+ featureNames(exprs(object)[[i]]) <- value[mmatches]
  
  idy  <- value[mmatches]
- y.avg  <- AverageDuplicates(assayData(exprs(object)[[i]])[[1]],idy)
+ y.avg  <- AverageDuplicates(assayData(exprs(object)[[i]])[["exprs"]],idy)
 
- assayData(exprs(object)[[i]])[[1]]  <- as.matrix(y.avg$data)
- exprs(object)[[i]]@reporterNames <- y.avg$acc
+ assayData(exprs(object)[[i]]) <-  list(exprs=as.matrix(y.avg$data)) 
+ 
+ featureNames(exprs(object)[[i]]) <- y.avg$acc
 }
 rownames(object@geneStudy)<-value
 object
 })
-setReplaceMethod("notes", "mergeESet", function(object, value){
+setReplaceMethod("notes", "mergeExpressionSet", function(object, value){
  object@notes<-value
 object
 })
-setReplaceMethod("geneStudy", "mergeESet", function(x, value){
+setReplaceMethod("geneStudy", "mergeExpressionSet", function(x, value){
  x@geneStudy<-value
 x})
 
-setReplaceMethod("phenoData", "mergeESet", function(object, value){
+setReplaceMethod("phenoData", "mergeExpressionSet", function(object, value){
 nn<-length(object)
 if (!is.element(class(value),"list")) stop("Replaced phenodata should be a list.") 
 if(length(value)!=nn) stop("Replaced phenodata list should have the same length as the number of studies.") 
@@ -235,20 +232,28 @@ setReplaceMethod("zscore", "mergeCoeff", function(x, value){
  x@zscore<-value
 x})
 
-###subset mergeESet
+###subset mergeExpressionSet
 check  <- function(x){
-  if(!is.element(class(x),c("list","mergeESet","exprSet","eSet","matrix"))) stop("all data must be either a list, a mergeESet, a matrix, an exprSet  or an eSet")
+  if(!is.element(class(x),c("list","mergeExpressionSet","exprSet","ExpressionSet","matrix"))) stop("all data must be either a list, a mergeExpressionSet, a matrix, an exprSet  or an ExpressionSet")
 }
 
 mergeget  <- function(x){
-  if (is.element(class(x),"mergeESet")){
+  if (is.element(class(x),"mergeExpressionSet")){
    return(exprs(x))
   }
-  if (is.element(class(x),"eSet")){
+  if (is.element(class(x),"ExpressionSet")){
    return(x)
   }
   if (is.element(class(x),"exprSet")){
-   return(as(x,"eSet"))
+   
+   pd <- data.frame(pData(x))
+   if(is.null(colnames(exprs(x)))) sn=as.character(c(1:ncol(exprs(x))))
+   else sn <- colnames(exprs(x))
+   row.names(pd) <- sn
+   pdat <- as(df2pD(pd),"AnnotatedDataFrame")
+   es <-  new("ExpressionSet", exprs=exprs(x),
+          phenoData=pdat)
+   return(es)
   }
   if (is.element(class(x),"list")){
    if(length(x)!=4) stop("if you want to merge a list, a list should have at least four slots, 'expression matirx', 'phenodata', 'gene names' and 'notes'.")
@@ -256,35 +261,31 @@ mergeget  <- function(x){
    if (!is.vector(x[[3]])) stop("third object of the input list must be a gene name vector.")
    if (is.null(x[[2]])) stop("second object of the input list can not be NULL.")
   
-   es <- list(es=x[[1]])
-   pd <- data.frame(rep(NA,(ncol(es[[1]]))))
-   if(is.null(colnames(es[[1]]))) sn=as.character(c(1:ncol(es[[1]])))
-   else sn<-colnames(es[[1]])
+   rownames(x[[1]])<-x[[3]]
+   pd <- data.frame(x[[2]])
+   if(is.null(colnames(x[[1]]))) sn=as.character(c(1:ncol(x[[1]])))
+   else sn<-colnames(x[[1]])
    row.names(pd)<-sn
-   pdata <- new("phenoData",pData=pd, varLabels=list(""))
-   es <-  new("eSet", phenoData=pdata, assayData=es,sampleNames=sn)
+   pdat <- as(df2pD(pd),"AnnotatedDataFrame")
+   es <-  new("ExpressionSet", exprs=x[[1]],
+          phenoData=pdat)
  
-   tt  <- es
-   notes(tt)  <- x[[4]]
-   tt@reporterNames <- x[[3]]
-   return(tt)
+   return(es)
   }
   if (is.element(class(x),"matrix")){
    if(is.null(rownames(x))) stop("if you want to merge matrix, rownames of matrix can not be NULL.")
-   es <- list(es=x)
-   pd <- data.frame(rep(NA,(ncol(es[[1]]))))
-   if(is.null(colnames(es[[1]]))) sn=as.character(c(1:ncol(es[[1]])))
-   else sn<-colnames(es[[1]])
+  
+   pd <- data.frame(rep(NA,(ncol(x))))
+   if(is.null(colnames(x))) sn=as.character(c(1:ncol(x)))
+   else sn<-colnames(x)
    row.names(pd)<-sn
-   pdata <- new("phenoData",pData=pd, varLabels=list(""))
-   es <-  new("eSet", phenoData=pdata, assayData=es,sampleNames=sn)
+   pdat <- as(df2pD(pd),"AnnotatedDataFrame")
+   es <-  new("ExpressionSet", exprs=x,
+          phenoData=pdat)
  
-   tt <- es
-   notes(tt)  <- ""
-   tt@reporterNames <- rownames(x)
-   return(tt)
+   return(es)
   }
-  stop("If you want to merge, the input object should be 'eSet', 'list', 'matrix', or 'mergeESet'.")
+  stop("If you want to merge, the input object should be 'ExpressionSet', 'list', 'matrix', or 'mergeExpressionSet'.")
 }
 
 
@@ -328,7 +329,7 @@ mergeExprs  <- function(...){
 
  for(i in 1:length(arg)){
   check(arg[[i]])
-  if (is.element(class(arg[[i]]),"mergeESet")){
+  if (is.element(class(arg[[i]]),"mergeExpressionSet")){
    mm  <- mergeget(arg[[i]])
    studynames[[i]]<-names(arg[[i]])
    for(j in 1:length(arg[[i]])){
@@ -351,9 +352,9 @@ mergeExprs  <- function(...){
  nnote  <- matrix(NA,tt,2)
 
  for (i in 1:tt){
-   if(i==1) iid  <-as.matrix(reporterNames(x[[i]]))
-   else iid  <- rbind(iid,as.matrix(reporterNames(x[[i]])))
-   nnote[i,2]  <- notes(x[[i]])
+   if(i==1) iid  <-as.matrix(featureNames(x[[i]]))
+   else iid  <- rbind(iid,as.matrix(featureNames(x[[i]])))
+   nnote[i,2]  <- ""
  }
 
  iid  <- as.vector(sort(unique(iid)))
@@ -361,13 +362,12 @@ mergeExprs  <- function(...){
 # generate the matrices with missing value "NA"
 
  for (i in 1:tt){
-  y  <- assayData(x[[i]])[[1]]
-  idy  <- reporterNames(x[[i]])
-
+  y  <- assayData(x[[i]])[["exprs"]]
+  idy  <- featureNames(x[[i]])
   y.avg  <- AverageDuplicates(y,idy)
-
-  assayData(x[[i]])[[1]] <-as.matrix(y.avg$data)
-  x[[i]]@reporterNames <- y.avg$acc
+  assayData(x[[i]]) <-  list(exprs=as.matrix(y.avg$data)) 
+ 
+  featureNames(x[[i]]) <- y.avg$acc
  }
 
 # generate the vector with common id "1", o.w. "0"
@@ -375,7 +375,7 @@ mergeExprs  <- function(...){
  idmatrix  <- matrix(0,length(iid),tt)
  index  <- as.vector(nnote[,2])
  for (i in 1:tt){
-  idx  <- reporterNames(x[[i]])
+  idx  <- featureNames(x[[i]])
   cc  <- match(iid,idx)
   idmatrix[,i]  <- ifelse(is.na(cc),0,1)
  }
@@ -385,7 +385,7 @@ mergeExprs  <- function(...){
  names(x)  <- studynames
 
 # generate the list that we want
- merged<-new("mergeESet",data=x,geneStudy=idmatrix,notes="")
+ merged<-new("mergeExpressionSet",data=x,geneStudy=idmatrix,notes="")
  return(merged)
 }
 
@@ -394,14 +394,14 @@ mergeExprs  <- function(...){
 
 
 check.length  <- function(x,wh){
- if(length(pData(x)[,wh])!=ncol(assayData(x)[[1]])) stop("Phenodata error: phenodata should have the same length as the number of columns of expression data.")
+ if(length(pData(x)[,wh])!=ncol(assayData(x)[["exprs"]])) stop("Phenodata error: phenodata should have the same length as the number of columns of expression data.")
  return()
 }
 
 .model.outcome  <-function(x,method=NULL,outcome=NULL,outcome2=NULL){
  if(is.null(method)) stop("Specify the method you want to use.") 
  nn<-length(x)
- if (nn<=1) stop("Number of studies in the mergeESet should not less than 2.")
+ if (nn<=1) stop("Number of studies in the mergeExpressionSet should not less than 2.")
  
  if(method=="linear"|method=="logistic"){
   if(!is.null(outcome)){
@@ -409,7 +409,7 @@ check.length  <- function(x,wh){
    if (is.element(class(outcome),"list")){
     if(length(outcome)!=nn)  stop("Phenodata error: the length of input phenodata list should be equal to the number of studies.")
     for(i in 1:nn){
-     if(length(outcome[[i]])!=ncol(assayData(exprs(x)[[i]])[[1]]))  stop("Phenodata error: phenodata should have the same length as the number of columns of expression data.")
+     if(length(outcome[[i]])!=ncol(assayData(exprs(x)[[i]])[["exprs"]]))  stop("Phenodata error: phenodata should have the same length as the number of columns of expression data.")
     }
     out  <- outcome
    }
@@ -435,7 +435,7 @@ check.length  <- function(x,wh){
    if (is.element(class(outcome),"list")){
     if(length(outcome)!=nn)  stop("Phenodata error: the length of input phenodata list should be equal to the number of studies.")
     for(i in 1:nn){
-     if(length(outcome[[i]])!=ncol(assayData(exprs(x)[[i]])[[1]]))  stop("Phenodata error: phenodata should have the same length as the number of columns of expression data.")
+     if(length(outcome[[i]])!=ncol(assayData(exprs(x)[[i]])[["exprs"]]))  stop("Phenodata error: phenodata should have the same length as the number of columns of expression data.")
     }
     out  <- outcome
    }
@@ -454,7 +454,7 @@ check.length  <- function(x,wh){
    if (is.element(class(outcome2),"list")){
     if(length(outcome2)!=nn)  stop("Phenodata error: the length of input phenodata list should be equal to the number of studies.")
     for(i in 1:nn){
-     if(length(outcome2[[i]])!=ncol(assayData(exprs(x)[[i]])[[1]]))  stop("Phenodata error: phenodata should have the same length as the number of columns of expression data.")
+     if(length(outcome2[[i]])!=ncol(assayData(exprs(x)[[i]])[["exprs"]]))  stop("Phenodata error: phenodata should have the same length as the number of columns of expression data.")
     }
     out2  <- outcome2
    }
@@ -488,8 +488,8 @@ check.length  <- function(x,wh){
  zscore  <- matrix(0,nuid,nn)
 
  for(i in 1:nn){
-  matches1<-match(geneuid,reporterNames(exprs(x)[[i]]))
-  exprs1  <- assayData(exprs(x)[[i]])[[1]][matches1,]
+  matches1<-match(geneuid,featureNames(exprs(x)[[i]]))
+  exprs1  <- assayData(exprs(x)[[i]])[["exprs"]][matches1,]
   if(method=="linear"){
    outcome1  <- out[[i]]
    result1  <- apply(exprs1,1,.mergemodel,outcome=outcome1,method="linear")
@@ -524,8 +524,7 @@ check.length  <- function(x,wh){
  nnote  <- rep(NA,nn)
 
  for(i in 1:nn){
-  nnote[i]  <-notes(exprs(x)[[i]])
-  if(is.null(notes(exprs(x)[[i]]))|is.na(notes(exprs(x)[[i]]))|notes(exprs(x)[[i]])=="") nnote[i]<-paste("study",i,sep=" ")
+  nnote[i]<-paste("study",i,sep=" ")
  }
 
  
@@ -618,7 +617,7 @@ maxintcor <- function(A,B){
 
 .intcor <- function(x,method="pearson",exact=TRUE){
  nn  <- length(x)
- if (nn<=1) stop("Number of studies in the mergeESet should not less than 2.")
+ if (nn<=1) stop("Number of studies in the mergeExpressionSet should not less than 2.")
  if (method!="pearson" && !exact) stop("When exact is FALSE, you can only use the method ''pearson''.")
  if (method!="pearson" && method!="spearman" && exact) stop("When exact is TRUE, you can only use the methods, ''pearson'' and ''spearman''.")
 
@@ -633,12 +632,11 @@ maxintcor <- function(A,B){
  nnote  <- rep(NA,nn)
 
  for(i in 1:nn){
-  matches1<-match(geneuid,reporterNames(exprs(x)[[i]]))
-  pcor[[i]]  <- assayData(exprs(x)[[i]])[[1]][matches1,]
+  matches1<-match(geneuid,featureNames(exprs(x)[[i]]))
+  pcor[[i]]  <- assayData(exprs(x)[[i]])[["exprs"]][matches1,]
   if (method=="spearman" && exact) pcor[[i]]<-t(apply(pcor[[i]],1,.intcor.order))
   
-  nnote[i]  <-notes(exprs(x)[[i]])
-  if(is.null(notes(exprs(x)[[i]]))|is.na(notes(exprs(x)[[i]]))|notes(exprs(x)[[i]])=="") nnote[i]<-paste("study",i,sep=" ")
+  nnote[i]<-paste("study",i,sep=" ")
  }
  
  names(pcor)  <- names(x)
@@ -870,14 +868,14 @@ isna  <- function(x) return(is.na(x))
 
 
 
-.plot.mergeESet  <- function(x,y,labels=NULL,geneid=NULL,xlab=NA,ylab=NA,title=NULL,main=NULL,scale=NULL,square=FALSE,plotype=1,...){
+.plot.mergeExpressionSet  <- function(x,y,labels=NULL,geneid=NULL,xlab=NA,ylab=NA,title=NULL,main=NULL,scale=NULL,square=FALSE,plotype=1,...){
  nn  <- length(x)
  if(is.null(labels)) labels<-names(x)
  if(length(labels)!=nn) stop("You need to specify the names for the studies.")
  if(nn<=1)  stop("You need to specify more than one study.")
  
  nn  <- length(x)
- if (nn<=1) stop("Number of studies in the mergeESet should not less than 2.")
+ if (nn<=1) stop("Number of studies in the mergeExpressionSet should not less than 2.")
  
  geneid1  <- rep(1,nrow(x@geneStudy))
  for(i in 1:nn){
@@ -918,11 +916,9 @@ isna  <- function(x) return(is.na(x))
   }
  
   for(i in 1:nn){
-   matches1<-match(gn,reporterNames(exprs(x)[[i]]))
-   pcor[[i]]  <- assayData(exprs(x)[[i]])[[1]][matches1,]
-   
-   nnote[i]  <-notes(exprs(x)[[i]])
-   if(is.null(notes(exprs(x)[[i]]))|is.na(notes(exprs(x)[[i]]))|notes(exprs(x)[[i]])=="") nnote[i]<-paste("study",i,sep=" ")
+   matches1<-match(gn,featureNames(exprs(x)[[i]]))
+   pcor[[i]]  <- assayData(exprs(x)[[i]])[["exprs"]][matches1,]
+   nnote[i]<-paste("study",i,sep=" ")
   }
   
   names(pcor)  <- names(x)
@@ -1034,7 +1030,7 @@ isna  <- function(x) return(is.na(x))
  }
  if(nn==2){
   nn  <- length(x)
-  if (nn<=1) stop("Number of studies in the mergeESet should not less than 2.")
+  if (nn<=1) stop("Number of studies in the mergeExpressionSet should not less than 2.")
  
   geneid1  <- rep(1,nrow(x@geneStudy))
   for(i in 1:nn){
@@ -1047,11 +1043,10 @@ isna  <- function(x) return(is.na(x))
   nnote  <- rep(NA,nn)
 
   for(i in 1:nn){
-   matches1<-match(gn,reporterNames(exprs(x)[[i]]))
-   pcor[[i]]  <- assayData(exprs(x)[[i]])[[1]][matches1,]
+   matches1<-match(gn,featureNames(exprs(x)[[i]]))
+   pcor[[i]]  <- assayData(exprs(x)[[i]])[["exprs"]][matches1,]
 
-   nnote[i]  <-notes(exprs(x)[[i]])
-   if(is.null(notes(exprs(x)[[i]]))|is.na(notes(exprs(x)[[i]]))|notes(exprs(x)[[i]])=="") nnote[i]<-paste("study",i,sep=" ")
+   nnote[i]  <- nnote[i]<-paste("study",i,sep=" ")
   }
   
   CC1  <- pcor[[1]]
@@ -1221,15 +1216,14 @@ isna  <- function(x) return(is.na(x))
 }
 
 
-.dens.mergeESet  <- function(x,main=NA,x.legend=NULL,y.legend=NULL,cex.legend=NULL,title=NULL,method=NULL,...){
+.dens.mergeExpressionSet  <- function(x,main=NA,x.legend=NULL,y.legend=NULL,cex.legend=NULL,title=NULL,method=NULL,...){
  nn  <- length(x)
- if (nn<=1) stop("Number of studies in the mergeESet should not less than 2.")
+ if (nn<=1) stop("Number of studies in the mergeExpressionSet should not less than 2.")
 
  nnote  <- rep(NA,nn)
 
  for(i in 1:nn){
-  nnote[i]  <-notes(exprs(x)[[i]])
-  if(is.null(notes(exprs(x)[[i]]))|is.na(notes(exprs(x)[[i]]))|notes(exprs(x)[[i]])=="") nnote[i]<-paste("study",i,sep=" ")
+  nnote[i]  <- nnote[i]<-paste("study",i,sep=" ")
  }
 
  geneid  <- rep(1,nrow(x@geneStudy))
@@ -1264,10 +1258,10 @@ isna  <- function(x) return(is.na(x))
   obs<-matrix(NA,nuid,np)
   
   for(i in 1:np){
-   matches1  <- match(geneuid,reporterNames(exprs(x)[[ppair[i,1]]]))
-   matches2  <- match(geneuid,reporterNames(exprs(x)[[ppair[i,2]]]))
-   exprs1  <- assayData(exprs(x)[[ppair[i,1]]])[[1]][matches1,]
-   exprs2  <- assayData(exprs(x)[[ppair[i,2]]])[[1]][matches2,]
+   matches1  <- match(geneuid,featureNames(exprs(x)[[ppair[i,1]]]))
+   matches2  <- match(geneuid,featureNames(exprs(x)[[ppair[i,2]]]))
+   exprs1  <- assayData(exprs(x)[[ppair[i,1]]])[["exprs"]][matches1,]
+   exprs2  <- assayData(exprs(x)[[ppair[i,2]]])[["exprs"]][matches2,]
 
    obs[,i] <- .icor(exprs1,exprs2)
    exp1[,i] <- .nullicornorm(exprs1,exprs2)
@@ -1332,10 +1326,10 @@ isna  <- function(x) return(is.na(x))
   geneuid  <- geneNames(x)[geneid==1]
   nuid  <- length(geneuid)
   
-  matches1  <- match(geneuid,reporterNames(exprs(x)[[1]]))
-  matches2  <- match(geneuid,reporterNames(exprs(x)[[2]]))
-  exprs1  <- assayData(exprs(x)[[1]])[[1]][matches1,]
-  exprs2  <- assayData(exprs(x)[[2]])[[1]][matches2,]
+  matches1  <- match(geneuid,featureNames(exprs(x)[[1]]))
+  matches2  <- match(geneuid,featureNames(exprs(x)[[2]]))
+  exprs1  <- assayData(exprs(x)[[1]])[["exprs"]][matches1,]
+  exprs2  <- assayData(exprs(x)[[2]])[["exprs"]][matches2,]
   exprs1[is.na(exprs1)]  <-  0
   exprs2[is.na(exprs2)]  <-  0
 
@@ -1362,26 +1356,25 @@ isna  <- function(x) return(is.na(x))
 }
 
 
-.summary.mergeESet<-function(object){
+.summary.mergeExpressionSet<-function(object){
  report  <- alist(...=)
  nn<-length(object)
 
  nnote  <- rep(NA,nn)
 
  for(i in 1:nn){
-  nnote[i]  <-notes(exprs(object)[[i]])
-  if(is.null(notes(exprs(object)[[i]]))|is.na(notes(exprs(object)[[i]]))|notes(exprs(object)[[i]])=="") nnote[i]<-paste("study",i,sep=" ")
+  nnote[i]  <- paste("study",i,sep=" ")
  } 
  report[[1]]<-matrix(NA,2,nn)
  report[[1]][1,]<-names(object)
  for(i in 1:nn){
-  report[[1]][2,i]<-nrow(assayData(exprs(object)[[i]])[[1]])
+  report[[1]][2,i]<-nrow(assayData(exprs(object)[[i]])[["exprs"]])
  }
 
  report[[2]]<-matrix(NA,2,nn)
  report[[2]][1,]<-names(object)
  for(i in 1:nn){
-  report[[2]][2,i]<-ncol(assayData(exprs(object)[[i]])[[1]])
+  report[[2]][2,i]<-ncol(assayData(exprs(object)[[i]])[["exprs"]])
  }
 
  report[[3]]<-nnote

@@ -9,10 +9,10 @@
 }
 
 \arguments{
-   \item{x}{Object of class mergeESet.}
+   \item{x}{Object of class mergeExpressionSet.}
    \item{method}{Method specifies the model used to generate coefficients.  At this time only linear regression, logistic regression, and Cox hazard rates are implemented.}
    \item{outcome, outcome2}{The format for the outcome variable depends on the model used.  For linear regression, outcome should be a continous response variable, for logistic regression, it should be a binary response variable, and for Cox hazard rates it should be time of event.  Outcome 2 is currently used only in the calculation of hazard rates, and should be a binary variable indicating censoring status for each subject.
-If outcome is a vector of length equal to number of studies, then each element represents the column in the eSet phenoData slot for that study.  If outcome is a list, then each list element should have actual outcome data for the corresponding study. }
+If outcome is a vector of length equal to number of studies, then each element represents the column in the ExpressionSet phenoData slot for that study.  If outcome is a list, then each list element should have actual outcome data for the corresponding study. }
 \item{...}{Not implemented at this time}
 }
 
