@@ -86,7 +86,7 @@ processing them}
 \details{The mergeExpressionSet class is conceived as an extension of the ExpressionSet class provided in Biobase for the storage of expression array data.  A mergeExpressionSet object is primarily a list of ExpressionSet objects, along with an incidence matrix indicating which genes appear in which studies.  A mergeExpressionSet object with a single study reverts to the ExpressionSet class. A number of accessor functions are defiined for this class, as well as a few convenient analysis and plotting functions. }
 
 \seealso{
-  \code{\link{mergeExprs}},\code{\link{intCor}},\code{\link{modelOutcome}},\code{\link{intcorDens}},ExpressionSet}
+  \code{\link{mergeExprs}},\code{\link{intCor}},\code{\link{modelOutcome}},\code{\link{intcorDens}}}
 
 \examples{
   if(require(Biobase) & require(MASS)){
