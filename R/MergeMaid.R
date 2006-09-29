@@ -668,6 +668,7 @@ maxintcor <- function(A,B){
  
  rownames(icor)<-geneuid
  labels<-names(x)
+ if(is.null(labels)) labels=""
  result  <- new("mergeCor", pairwise.cors=icor,notes=labels,maxcors=canc)
  return(result)
 }
@@ -1232,6 +1233,7 @@ isna  <- function(x) return(is.na(x))
  }
  geneuid  <- geneNames(x)[geneid==1]
  nuid  <- length(geneuid)
+ rtn <- alist(...=)
 
  if(nn>2){
   np<-nn*(nn-1)/2 
@@ -1265,7 +1267,7 @@ isna  <- function(x) return(is.na(x))
 
    obs[,i] <- .icor(exprs1,exprs2)
    exp1[,i] <- .nullicornorm(exprs1,exprs2)
-   }
+  }
      
   k<-m<-1
   par(mfrow=c(nn,nn),oma=c(0,0,8,0))
@@ -1283,6 +1285,7 @@ isna  <- function(x) return(is.na(x))
       plot(density(d),xlim=c(xmin-range/10,xmax+range/10),ylim=c(0,ymax+ymax/5),main=main,...)
       lines(density(d1),col=2,...)
       
+      rtn[[k]]<-d1
       k=k+1
      }
     }
@@ -1349,9 +1352,9 @@ isna  <- function(x) return(is.na(x))
   if(is.null(y.legend)) y.legend<-ymax
   if(is.null(cex.legend)) cex.legend<-.9
   legend(x.legend,y.legend, paste(legend.text), col=1:2,lty=1,cex=cex.legend)
-  
+  rtn<-d1
  }
- return()
+ return(rtn)
 
 }
 

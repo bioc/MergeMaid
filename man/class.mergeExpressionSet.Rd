@@ -2,27 +2,24 @@
 \docType{class}
 \alias{mergeExpressionSet-class}
 \alias{mergeExpressionSet}
-
 \alias{geneStudy}
 \alias{geneStudy<-}
 \alias{subsetmES}
 \alias{geneStudy,mergeExpressionSet-method}
-\alias{exprs,mergeExpressionSet-method}
 \alias{names,mergeExpressionSet-method}
-\alias{notes,mergeExpressionSet-method}
-\alias{phenoData,mergeExpressionSet-method}
 \alias{length,mergeExpressionSet-method}
 \alias{summary,mergeExpressionSet-method}
+\alias{exprs<-,mergeExpressionSet,ANY-method}
+\alias{exprs,mergeExpressionSet-method}
+\alias{geneNames<-,mergeExpressionSet,ANY-method}
 \alias{geneNames,mergeExpressionSet-method}
-
-\alias{exprs<-,mergeExpressionSet-method}
-\alias{geneNames<-,mergeExpressionSet-method}
+\alias{notes<-,mergeExpressionSet,ANY-method}
+\alias{notes,mergeExpressionSet-method}
+\alias{phenoData<-,mergeExpressionSet,ANY-method}
+\alias{phenoData,mergeExpressionSet-method}
 \alias{names<-,mergeExpressionSet-method}
-\alias{notes<-,mergeExpressionSet-method}
-\alias{phenoData<-,mergeExpressionSet-method}
 \alias{geneStudy<-,mergeExpressionSet-method}
 \alias{[,mergeExpressionSet-method}
-
 \alias{plot,mergeExpressionSet-method}
 \alias{intcorDens,mergeExpressionSet-method}
 \alias{intCor,mergeExpressionSet-method}
@@ -64,6 +61,7 @@ processing them}
    \describe{
       \item{geneStudy (mergeExpressionSet)}{Accessor function for the geneStudy slot.}
       \item{phenoData (mergeExpressionSet)}{Accessor function for phenodata in ExpressionSet's. Returns a list, one phenodata matrix per study.} 
+      \item{phenoData<- (mergeExpressionSet)}{A replace function for phenodata in ExpressionSet's. Returns a list, one phenodata matrix per study.} 
       \item{intersection (mergeExpressionSet)}{Represent data for genes common to all studies as a single ExpressionSet object.}
       \item{modelOutcome (mergeExpressionSet)}{Calculate regression coefficients for each study/gene.}
       \item{intCor (mergeExpressionSet)}{Calculate the integrative correlation coefficients for mergeExpressionSet data.}

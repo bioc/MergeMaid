@@ -1,6 +1,6 @@
 Package: MergeMaid
-Version: 2.5.0
-Date: 2006-4-09
+Version: 2.5.1
+Date: 2006-9-28
 Title: Merge Maid
 Author: Xiaogang Zhong <zhong@ams.jhu.edu> Leslie Cope <cope@jhu.edu> Elizabeth Garrett
         <esg@jhu.edu> Giovanni Parmigiani <gp@jhu.edu>
@@ -16,7 +16,7 @@ Description: The functions in this R extension are intended for
 	Other functions use the output from 'modelOutcome' to graphically
         display the results and cross-validate associations of gene
         expression data with survival.
-Depends: R (>= 2.2.0), survival, Biobase, MASS
+Depends: R (>= 2.2.0), survival, Biobase, MASS, methods
 License: GPL version 2 or higher
 URL: http://astor.som.jhmi.edu/MergeMaid
 biocViews: Microarray, DifferentialExpression, Visualization
