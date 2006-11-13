@@ -86,6 +86,7 @@ setMethod("plot","mergeExpressionSet",function(x,y,...) return(.plot.mergeExpres
 setMethod("hist","mergeCor",function(x,...) return(.hist.mergeCor(x=x,...)))
 setMethod("notes","mergeCor",function(object) return(object@notes))
 setMethod("intcorDens","mergeExpressionSet",function(x,method,...) return(.dens.mergeExpressionSet(x=x,method=method,...)))
+setMethod("show", "mergeExpressionSet", function(object) return(.show.mergeExpressionSet(object=object)))
 setMethod("summary","mergeExpressionSet",function(object,...)  return(.summary.mergeExpressionSet(object=object,...)))
 setMethod("integrative.cors","mergeCor",function(x,adjust,...) return(.integrative.cors(x=x,adjust=adjust,...)))
 
@@ -134,8 +135,11 @@ setMethod("intersection","mergeExpressionSet", function(x){
 	   }
            row.names(pd)<-sn
 	   colnames(ee)<-sn
-           pdat <- as(df2pD(pd),"AnnotatedDataFrame")
-           es <-  new("ExpressionSet", exprs=ee, phenoData=pdat)
+           
+	   
+	   ad <- new("AnnotatedDataFrame", data=pd)
+
+           es <-  new("ExpressionSet", exprs=ee, phenoData=ad)
            return(es)})
 setMethod("pairwise.cors","mergeCor",function(x) return(x@pairwise.cors))
 setMethod("maxcors","mergeCor",function(x) return(x@maxcors))
@@ -249,10 +253,11 @@ mergeget  <- function(x){
    pd <- data.frame(pData(x))
    if(is.null(colnames(exprs(x)))) sn=as.character(c(1:ncol(exprs(x))))
    else sn <- colnames(exprs(x))
-   row.names(pd) <- sn
-   pdat <- as(df2pD(pd),"AnnotatedDataFrame")
-   es <-  new("ExpressionSet", exprs=exprs(x),
-          phenoData=pdat)
+   
+   rownames(pd) <- sn
+   ad <- new("AnnotatedDataFrame", data=pd)
+   es <-  new("ExpressionSet", exprs=exprs(x), phenoData=ad)
+   
    return(es)
   }
   if (is.element(class(x),"list")){
@@ -265,11 +270,9 @@ mergeget  <- function(x){
    pd <- data.frame(x[[2]])
    if(is.null(colnames(x[[1]]))) sn=as.character(c(1:ncol(x[[1]])))
    else sn<-colnames(x[[1]])
-   row.names(pd)<-sn
-   pdat <- as(df2pD(pd),"AnnotatedDataFrame")
-   es <-  new("ExpressionSet", exprs=x[[1]],
-          phenoData=pdat)
- 
+   rownames(pd) <- sn
+   ad <- new("AnnotatedDataFrame", data=pd)
+   es <-  new("ExpressionSet", exprs=x[[1]], phenoData=ad) 
    return(es)
   }
   if (is.element(class(x),"matrix")){
@@ -279,10 +282,10 @@ mergeget  <- function(x){
    if(is.null(colnames(x))) sn=as.character(c(1:ncol(x)))
    else sn<-colnames(x)
    row.names(pd)<-sn
-   pdat <- as(df2pD(pd),"AnnotatedDataFrame")
-   es <-  new("ExpressionSet", exprs=x,
-          phenoData=pdat)
- 
+   
+   rownames(pd) <- sn
+   ad <- new("AnnotatedDataFrame", data=pd)
+   es <-  new("ExpressionSet", exprs=x, phenoData=ad) 
    return(es)
   }
   stop("If you want to merge, the input object should be 'ExpressionSet', 'list', 'matrix', or 'mergeExpressionSet'.")
@@ -315,6 +318,7 @@ AverageDuplicates  <- function(data.exprs,data.acc) {
  
    data.exprs <- data4.exprs[keep==1,]
    data.acc <- data4.acc[keep==1]
+   rownames(data.exprs)<-data.acc
   }
   return(list(data=as.data.frame(data.exprs),acc=data.acc))
 }
@@ -1357,6 +1361,10 @@ isna  <- function(x) return(is.na(x))
  return(rtn)
 
 }
+
+.show.mergeExpressionSet<-function(object){
+ lapply(object@data, show) return()}
+
 
 
 .summary.mergeExpressionSet<-function(object){
