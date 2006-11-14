@@ -18,6 +18,7 @@ if(is.null(getGeneric("names"))) setGeneric("names",function(x) standardGeneric(
 if(is.null(getGeneric("notes"))) setGeneric("notes",function(object) standardGeneric("notes"))
 if(is.null(getGeneric("phenoData"))) setGeneric("phenoData",function(object) standardGeneric("phenoData"))
 if(is.null(getGeneric("length"))) setGeneric("length",function(x) standardGeneric("length"))
+if(is.null(getGeneric("show"))) setGeneric("show",function(x) standardGeneric("show"))
 if(is.null(getGeneric("summary"))) setGeneric("summary",function(object,...) standardGeneric("summary"))
 if(is.null(getGeneric("geneStudy"))) setGeneric("geneStudy",function(x) standardGeneric("geneStudy"))
 if(is.null(getGeneric("coeff"))) setGeneric("coeff",function(x) standardGeneric("coeff"))
@@ -138,7 +139,6 @@ setMethod("intersection","mergeExpressionSet", function(x){
            
 	   
 	   ad <- new("AnnotatedDataFrame", data=pd)
-
            es <-  new("ExpressionSet", exprs=ee, phenoData=ad)
            return(es)})
 setMethod("pairwise.cors","mergeCor",function(x) return(x@pairwise.cors))
@@ -1363,7 +1363,10 @@ isna  <- function(x) return(is.na(x))
 }
 
 .show.mergeExpressionSet<-function(object){
- lapply(object@data, show) return()}
+ x=exprs(object)
+ y=list()
+ for(i in 1:length(x)){ show(x[[i]])}
+return()}
 
 
 

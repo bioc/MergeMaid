@@ -9,6 +9,7 @@
 \alias{names,mergeExpressionSet-method}
 \alias{length,mergeExpressionSet-method}
 \alias{summary,mergeExpressionSet-method}
+\alias{show,mergeExpressionSet-method}
 \alias{exprs<-,mergeExpressionSet,ANY-method}
 \alias{exprs,mergeExpressionSet-method}
 \alias{geneNames<-,mergeExpressionSet,ANY-method}
