@@ -297,11 +297,11 @@ AverageDuplicates  <- function(data.exprs,data.acc) {
   data.acc <- as.character(data.acc)
   dups<- rev(duplicated(rev(data.acc)))+duplicated(data.acc)
   dups<- ifelse(dups==0,0,1)
-  
+
   if(sum(dups)>0) {
-   data1.exprs<- data.exprs[dups==0,]
+   data1.exprs<- as.matrix(data.exprs[dups==0,])
    data1.acc<-data.acc[dups==0]
-   data2.exprs<- data.exprs[dups==1,]
+   data2.exprs<- as.matrix(data.exprs[dups==1,])
    data2.acc<-data.acc[dups==1]
    data3.acc<-unique(data2.acc)
    data3.exprs<-matrix(NA,length(data3.acc),ncol(data.exprs))
@@ -309,19 +309,17 @@ AverageDuplicates  <- function(data.exprs,data.acc) {
    k <- 0
    for(i in data3.acc) {
     k <- k+1
-    data3.exprs[k,]<-apply(data2.exprs[data2.acc==i,],2,mean,na.rm=TRUE)
+    data3.exprs[k,]<-apply(as.matrix(data2.exprs[data2.acc==i,]), 2,mean,na.rm=TRUE)
    }
-  
+
    data4.exprs<-rbind(data1.exprs,data3.exprs)
    data4.acc<-c(data1.acc,data3.acc)
    keep <- ifelse(as.character(data4.acc)=="",0,1)
- 
-   data.exprs <- data4.exprs[keep==1,]
-   data.acc <- data4.acc[keep==1]
-   rownames(data.exprs)<-data.acc
+   data.exprs <- as.matrix(data4.exprs[keep==1,])
+   data.acc <- as.matrix(data4.acc[keep==1])
   }
   return(list(data=as.data.frame(data.exprs),acc=data.acc))
-}
+} 
 
 
 mergeExprs  <- function(...){
