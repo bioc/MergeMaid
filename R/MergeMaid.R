@@ -47,7 +47,6 @@ if(is.null(getGeneric("stdcoeff<-"))) setGeneric("stdcoeff<-",function(x,value) 
 if(is.null(getGeneric("zscore<-"))) setGeneric("zscore<-",function(x,value) standardGeneric("zscore<-"))
 
 
-
 ### methods
 ### accessor functions
 setMethod("exprs","mergeExpressionSet",function(object) return(object@data))

@@ -11,6 +11,8 @@
 \alias{plot,list-method}
 \alias{notes,mergeCor-method}
 
+\alias{hist}
+\alias{plot}
 \alias{maxcors}
 
 \title{Class mergeCor, a class for storing data relevant to integrative correlation coefficients.}
@@ -33,11 +35,11 @@
       \item{pairs.cors( mergeCor)}{Accessor function for the pairwise.cors slot}
       \item{integrate.cors(mergeCor)}{Accessor function, returns integrative correlation (average pairwise correlation of correlations) for each gene. If adjust is TRUE, returns the integrate correlation devided by the correponding canonical correlation, and the default value is FALSE.}
       \item{maxcors(mergeCor)}{Accessor function, returns maximal canonical correlation (pairwise canonical correlations) for each pair of studies.}
-      \item{hist(mergeCor,...)}{Draw histograms of integrative correlation, here we use the approximate method to calculate the integrative correlation.  }
   }
   Standard generic methods:
   \describe{
       \item{notes (mergeCor)}{An accessor function for the notes slot.} 
+      \item{hist(mergeCor,...)}{Draw histograms of integrative correlation, here we use the approximate method to calculate the integrative correlation.  }
   }
 }
 

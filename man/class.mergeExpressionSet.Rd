@@ -66,7 +66,6 @@ processing them}
       \item{intersection (mergeExpressionSet)}{Represent data for genes common to all studies as a single ExpressionSet object.}
       \item{modelOutcome (mergeExpressionSet)}{Calculate regression coefficients for each study/gene.}
       \item{intCor (mergeExpressionSet)}{Calculate the integrative correlation coefficients for mergeExpressionSet data.}
-      \item{plot (mergeExpressionSet)}{Draw scatterplots to compare integrative correlations for genes, here we use the approximate method to calculate the integrative correlation.}
       \item{intcorDens (mergeExpressionSet)}{Plot the distribution of  the integrative correlation coefficients and the null distribution obtained by permutation here we use the approximate method to calculate the integrative correlation.}
   }
   Standard generic methods:
@@ -76,7 +75,7 @@ processing them}
       \item{names<- (mergeExpressionSet)}{A replace function for study names.}
       \item{[ (mergeExpressionSet)}{ A subset operator. Returns a mergeExpressionSet containing a subset of the studies.  A mergeExpressionSet with only one study is returned as a single ExpressionSet.}
       \item{summary (mergeExpressionSet)}{Obtain the basic information for 'mergeExpressionSet'.}
-
+      \item{plot (mergeExpressionSet)}{Draw scatterplots to compare integrative correlations for genes, here we use the approximate method to calculate the integrative correlation.}
   }
 }
 

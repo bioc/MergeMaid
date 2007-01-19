@@ -43,7 +43,7 @@
   }
   Standard generic methods:
   \describe{
-      \item{plot (matrix)}{This method is not formally defined for mergeCoeff objects but for a matrix.  This function would typically be called with the following syntax, plot(coeff(mergeCoeff)).The result is pairwise scatterplots of the columns of the selected matrix.  If there are two studies, this is a single scatterplot.}
+      \item{plot (list)}{This method is not formally defined for mergeCoeff objects but for a matrix.  This function would typically be called with the following syntax, plot(coeff(mergeCoeff)).The result is pairwise scatterplots of the columns of the selected matrix.  If there are two studies, this is a single scatterplot.}
   }
 }
 

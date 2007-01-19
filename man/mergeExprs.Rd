@@ -38,7 +38,7 @@ Since merging depends on geneids, these conventions are essential.}
 
   rr<-rnorm(200*22,0,1)
   mm<-matrix(rr,200,22)
-  rownames(mm)<-geneNames(sample2)
+  rownames(mm)<-sample2[[3]]
   merge.m<-mergeExprs(sample1,mm,sample2)
   intcor.m<-intCor(merge.m)
   plot(merge.m)
@@ -46,7 +46,7 @@ Since merging depends on geneids, these conventions are essential.}
   rr<-rnorm(200*50,0,1)
   mm2<-matrix(rr,200,50)
   ph.ll<-as.data.frame(rbinom(50,1,.5))
-  ll<-list(mm2,ph.ll,geneNames(sample2),"list 2")
+  ll<-list(mm2,ph.ll,sample2[[3]],"list 2")
   merge.t<-mergeExprs(sample1,mm,sample2,ll)
   intcor.t<-intCor(merge.t)
   plot(merge.t)
