@@ -1,0 +1,10 @@
+import(Biobase,graphics)
+exportClasses("mergeExpressionSet","mergeCor", "mergeCoeff")
+exportPattern("^[^\\.]")
+exportMethods(exprs, geneNames, names, notes, phenoData, length, show,
+              summary, geneStudy, coeff, stdcoeff, zscore,
+              pairwise.cors, maxcors, integrative.cors, modelOutcome,
+              intCor, plot, hist, intcorDens, intersection,
+              "exprs<-", "geneNames<-", "names<-", "notes<-",
+              "phenoData<-", "geneStudy<-", "coeff<-", "stdcoeff<-",
+              "zscore<-")
