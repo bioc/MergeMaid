@@ -12,14 +12,6 @@ setClass("mergeCor",representation(pairwise.cors="matrix",maxcors="vector",notes
 setClass("mergeCoeff",representation(coeff="matrix",coeff.std="matrix",zscore="matrix",method="vector"))
 
 ### necessary generics
-if(is.null(getGeneric("exprs"))) setGeneric("exprs",function(object) standardGeneric("exprs"))
-if(is.null(getGeneric("geneNames"))) setGeneric("geneNames",function(object) standardGeneric("geneNames"))
-if(is.null(getGeneric("names"))) setGeneric("names",function(x) standardGeneric("names"))
-if(is.null(getGeneric("notes"))) setGeneric("notes",function(object) standardGeneric("notes"))
-if(is.null(getGeneric("phenoData"))) setGeneric("phenoData",function(object) standardGeneric("phenoData"))
-if(is.null(getGeneric("length"))) setGeneric("length",function(x) standardGeneric("length"))
-if(is.null(getGeneric("show"))) setGeneric("show",function(x) standardGeneric("show"))
-if(is.null(getGeneric("summary"))) setGeneric("summary",function(object,...) standardGeneric("summary"))
 if(is.null(getGeneric("geneStudy"))) setGeneric("geneStudy",function(x) standardGeneric("geneStudy"))
 if(is.null(getGeneric("coeff"))) setGeneric("coeff",function(x) standardGeneric("coeff"))
 if(is.null(getGeneric("stdcoeff"))) setGeneric("stdcoeff",function(x) standardGeneric("stdcoeff"))
