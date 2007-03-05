@@ -21,9 +21,6 @@ if(is.null(getGeneric("maxcors"))) setGeneric("maxcors",function(x) standardGene
 if(is.null(getGeneric("integrative.cors"))) setGeneric("integrative.cors",function(x,...) standardGeneric("integrative.cors"))
 if(is.null(getGeneric("modelOutcome"))) setGeneric("modelOutcome",function(x,outcome,outcome2=NULL,method=c("linear","logistic","cox"),...)  standardGeneric("modelOutcome"))
 if(is.null(getGeneric("intCor"))) setGeneric("intCor",function(x,method=c("pearson","spearman"),exact=TRUE,...) standardGeneric("intCor"))
-if(is.null(getGeneric("plot"))) setGeneric("plot",function(x,y,...) standardGeneric("plot"))
-if(is.null(getGeneric("hist"))) setGeneric("hist",function(x,...)
-standardGeneric("hist"))
 if(is.null(getGeneric("intcorDens"))) setGeneric("intcorDens",function(x,method="pearson",...) standardGeneric("intcorDens"))
 if(is.null(getGeneric("intersection"))) setGeneric("intersection",function(x) standardGeneric("intersection"))
 

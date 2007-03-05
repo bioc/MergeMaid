@@ -1,4 +1,5 @@
 import(Biobase,graphics)
+export(mergeExprs)
 exportClasses("mergeExpressionSet","mergeCor", "mergeCoeff")
 exportPattern("^[^\\.]")
 exportMethods(exprs, geneNames, names, notes, phenoData, length, show,
