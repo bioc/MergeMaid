@@ -225,7 +225,7 @@ x})
 
 ###subset mergeExpressionSet
 check  <- function(x){
-  if(!is.element(class(x),c("list","mergeExpressionSet","exprSet","ExpressionSet","matrix"))) stop("all data must be either a list, a mergeExpressionSet, a matrix, an exprSet  or an ExpressionSet")
+  if(!is.element(class(x),c("list","mergeExpressionSet","ExpressionSet","matrix"))) stop("all data must be either a list, a mergeExpressionSet, a matrix, or an ExpressionSet")
 }
 
 mergeget  <- function(x){
@@ -234,18 +234,6 @@ mergeget  <- function(x){
   }
   if (is.element(class(x),"ExpressionSet")){
    return(x)
-  }
-  if (is.element(class(x),"exprSet")){
-   
-   pd <- data.frame(pData(x))
-   if(is.null(colnames(exprs(x)))) sn=as.character(c(1:ncol(exprs(x))))
-   else sn <- colnames(exprs(x))
-   
-   rownames(pd) <- sn
-   ad <- new("AnnotatedDataFrame", data=pd)
-   es <-  new("ExpressionSet", exprs=exprs(x), phenoData=ad)
-   
-   return(es)
   }
   if (is.element(class(x),"list")){
    if(length(x)!=4) stop("if you want to merge a list, a list should have at least four slots, 'expression matirx', 'phenodata', 'gene names' and 'notes'.")

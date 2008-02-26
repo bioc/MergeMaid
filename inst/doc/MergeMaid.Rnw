@@ -32,9 +32,8 @@ MergeMaid is designed to facilitate multi-study analysis.  The
 merging function generates objects that can efficiently support a
 variety of joint analyses.  Visualization tools allow for
 exploration of the data without requiring normalization across
-platforms. We have updated the package by replacing the exprSet
-class with the ExpressionSet class and adding a quick approximate calculation
-of the integrative correlation.
+platforms. We have updated the package by adding a quick approximate
+calculation of the integrative correlation.
 
 Version 2.1.6 of MergeMaid includes the following primary functions,
 with corresponding data classes
@@ -194,14 +193,6 @@ than for the mergeCoeff class.  The usual syntax is
 \verb+plot(coeff(mergeCoeff))+ so that the coefficients are
 selected.
 \end{description}
-
-
-
-
-
-
-
-
 
 
 \end{document}
