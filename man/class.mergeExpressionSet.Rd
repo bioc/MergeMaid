@@ -49,7 +49,7 @@ processing them}
 
 
 \section{Methods}{
-   Derived from \code{\link[Biobase:class.ExpresionSet]{ExpressionSet}}:
+   Derived from \code{\link[Biobase:class.ExpressionSet]{ExpressionSet}}:
    \describe{
       \item{exprs(mergeExpressionSet)}{ An accessor function for the data slot.} 
       \item{exprs<- (mergeExpressionSet)}{A replace function for the data slot}
