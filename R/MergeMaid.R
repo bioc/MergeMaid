@@ -166,7 +166,7 @@ data=exprs(x)[i]
 return(new("mergeExpressionSet",data=data,geneStudy=gs,notes=notes))}}
 
 setMethod("[", "mergeExpressionSet",
-    function(x, i,j=NULL,drop=T,...) subsetmES(x, i, ...))
+    function(x, i,j=NULL,...,drop=T) subsetmES(x, i, ...))
 
 ### replacement functions
 setReplaceMethod("exprs", "mergeExpressionSet", function(object, value){
