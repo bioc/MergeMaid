@@ -1,5 +1,4 @@
 \name{mergeData}
-\docType{instance}
 \alias{mergeData}
 \alias{sample1}
 \alias{sample2}
