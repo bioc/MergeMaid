@@ -26,6 +26,7 @@ if(is.null(getGeneric("intersection"))) setGeneric("intersection",function(x) st
 
 
 if(is.null(getGeneric("exprs<-"))) setGeneric("exprs<-",function(object,value) standardGeneric("exprs<-"))
+if(is.null(getGeneric("geneNames"))) setGeneric("geneNames",function(object, value) standardGeneric("geneNames"))
 if(is.null(getGeneric("geneNames<-"))) setGeneric("geneNames<-",function(object, value) standardGeneric("geneNames<-"))
 if(is.null(getGeneric("names<-"))) setGeneric("names<-",function(x,value) standardGeneric("names<-"))
 if(is.null(getGeneric("notes<-"))) setGeneric("notes<-",function(object,value) standardGeneric("notes<-"))
