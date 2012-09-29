@@ -109,7 +109,7 @@ setMethod("intersection","mergeExpressionSet", function(x){
            }
 	   rownames(ee)<-geneuid
 	   
-	   pd <- data.frame(matrix(rep(NA,ncol(ee)),nr=ncol(ee)))
+	   pd <- data.frame(matrix(rep(NA,ncol(ee)),nrow=ncol(ee)))
 	   if(is.null(colnames(ee))) sn=as.character(c(1:ncol(ee)))
            else {
 	    if(length(unique(colnames(ee)))!=ncol(ee)){
@@ -947,7 +947,7 @@ isna  <- function(x) return(is.na(x))
        aa<-c(.5,.5)
        bb<-c(.7,.8) 
        plot(aa,bb,xlim=c(0,1),ylim=c(0,1),xlab=NA,ylab=NA,pch=" ",xaxt="n",yaxt="n")
-       text(.47,0.5,cex=1.2,paste("CORR = ",as.character(signif(score,digit=3))),col=4)
+       text(.47,0.5,cex=1.2,paste("CORR = ",as.character(signif(score,digits=3))),col=4)
        m<-m+1
       }
      }
@@ -960,7 +960,7 @@ isna  <- function(x) return(is.na(x))
     }
    }
   
-   if(is.null(title)) title<-paste("Integrated Correlation\n\nGene",gn[mmatches],": average integrated score is",as.character(signif(score,digit=3)),sep=" ")
+   if(is.null(title)) title<-paste("Integrated Correlation\n\nGene",gn[mmatches],": average integrated score is",as.character(signif(score,digits=3)),sep=" ")
    mtext(title, line =0.5, cex=1.2,outer = TRUE)
    par(mfrow=c(1,1))
   }
@@ -988,7 +988,7 @@ isna  <- function(x) return(is.na(x))
        aa<-c(.5,.5)
        bb<-c(.7,.8) 
        plot(aa,bb,xlim=c(0,1),ylim=c(0,1),xlab=NA,ylab=NA,pch=" ",xaxt="n",yaxt="n")
-       text(.47,0.5,cex=1.2,paste("CORR = ",as.character(signif(score,digit=3))),col=4)
+       text(.47,0.5,cex=1.2,paste("CORR = ",as.character(signif(score,digits=3))),col=4)
        m<-m+1
       }
      }
@@ -1001,7 +1001,7 @@ isna  <- function(x) return(is.na(x))
     }
    }
   
-   if(is.null(title)) title<-paste("Integrated Correlation\n\nGene",gn[mmatches],": average integrated score is",as.character(signif(score,digit=3)),sep=" ")
+   if(is.null(title)) title<-paste("Integrated Correlation\n\nGene",gn[mmatches],": average integrated score is",as.character(signif(score,digits=3)),sep=" ")
    mtext(title, line =0.5, cex=1.2,outer = TRUE)
    par(mfrow=c(1,1))
    if(is.null(plotype)) par(ask=F)
@@ -1055,8 +1055,8 @@ isna  <- function(x) return(is.na(x))
    cy<-m2[-mmatches,]%*%matrix(y,length(y),1)
 
    par(oma=c(0,0,0,3))
-   if(is.na(xlab)) plot(as.vector(cx),as.vector(cy),ylab=ylab,xlab=paste("CORR = ",as.character(signif(score,digit=3))),main=main,...)
-   else plot(as.vector(cx),as.vector(cy),ylab=ylab,xlab=paste("\n",xlab,"\nCORR = ",as.character(signif(score,digit=3))),main=main,...)
+   if(is.na(xlab)) plot(as.vector(cx),as.vector(cy),ylab=ylab,xlab=paste("CORR = ",as.character(signif(score,digits=3))),main=main,...)
+   else plot(as.vector(cx),as.vector(cy),ylab=ylab,xlab=paste("\n",xlab,"\nCORR = ",as.character(signif(score,digits=3))),main=main,...)
    abline(h=0); abline(v=0)
   }
   
@@ -1065,8 +1065,8 @@ isna  <- function(x) return(is.na(x))
    cx=pcor[[1]]
    cy=pcor[[2]]
    par(oma=c(0,0,0,3))
-   if(is.na(xlab)) .ic.plot(cx,cy,mmatches,ylab=ylab,xlab=paste("CORR = ",as.character(signif(score,digit=3))),main=main,scale=scale,square=square,...)
-   else .ic.plot(cx,cy,mmatches,ylab=ylab,xlab=paste("\n",xlab,"\nCORR = ",as.character(signif(score,digit=3))),main=main,scale=scale,square=square,...)
+   if(is.na(xlab)) .ic.plot(cx,cy,mmatches,ylab=ylab,xlab=paste("CORR = ",as.character(signif(score,digits=3))),main=main,scale=scale,square=square,...)
+   else .ic.plot(cx,cy,mmatches,ylab=ylab,xlab=paste("\n",xlab,"\nCORR = ",as.character(signif(score,digits=3))),main=main,scale=scale,square=square,...)
    if(is.null(plotype)) par(ask=F)
   }
  }

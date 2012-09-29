@@ -2,6 +2,8 @@
 \docType{class}
 \alias{mergeExpressionSet-class}
 \alias{mergeExpressionSet}
+\alias{geneNames}
+\alias{geneNames<-}
 \alias{geneStudy}
 \alias{geneStudy<-}
 \alias{subsetmES}
@@ -12,7 +14,7 @@
 \alias{show,mergeExpressionSet-method}
 \alias{exprs<-,mergeExpressionSet,ANY-method}
 \alias{exprs,mergeExpressionSet-method}
-\alias{geneNames<-,mergeExpressionSet,ANY-method}
+\alias{geneNames<-,mergeExpressionSet-method}
 \alias{geneNames,mergeExpressionSet-method}
 \alias{notes<-,mergeExpressionSet,ANY-method}
 \alias{notes,mergeExpressionSet-method}
