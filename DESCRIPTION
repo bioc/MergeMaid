@@ -1,5 +1,5 @@
 Package: MergeMaid
-Version: 2.59.0
+Version: 2.59.1
 Date: 2007-9-29
 Title: Merge Maid
 Author: Xiaogang Zhong <zhong@ams.jhu.edu> Leslie Cope <cope@jhu.edu> Elizabeth Garrett
@@ -20,3 +20,4 @@ Depends: R (>= 2.10.0), survival, Biobase, MASS, methods
 License: GPL (>= 2)
 URL: http://astor.som.jhmi.edu/MergeMaid
 biocViews: Microarray, DifferentialExpression, Visualization
+PackageStatus: Deprecated
